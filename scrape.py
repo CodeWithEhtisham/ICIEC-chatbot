@@ -75,7 +75,6 @@ system_prompt = (
     "answer concise."
     "\n\n"
     "{context}"
-    "Sources: {sources}"
 )
 
 prompt = ChatPromptTemplate.from_messages(
