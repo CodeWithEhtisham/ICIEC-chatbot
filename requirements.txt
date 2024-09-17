@@ -5,3 +5,4 @@ bs4
 openai
 faiss-cpu
 python-dotenv
+beautifulsoup4
