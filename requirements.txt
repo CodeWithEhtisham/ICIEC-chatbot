@@ -7,3 +7,4 @@ faiss-cpu
 python-dotenv
 beautifulsoup4
 langchain_chroma
+streamlit
