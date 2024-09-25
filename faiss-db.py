@@ -25,17 +25,17 @@ else:
 # Initialize LangChain and OpenAI client
 llm = ChatOpenAI(model="gpt-4o-mini", openai_api_key=openai_api_key)
 embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
+input_file = 'cleaned_normalized_urls.txt'  # Your input file name
 
+with open(input_file, 'r') as f:
+    # Read all lines and strip any surrounding whitespace
+    urls = [line.strip() for line in f.readlines()]
+
+# Normalize all URLs in the list
+normalized_urls = [url for url in urls]
 # Web page loader
 loader_multiple_pages = WebBaseLoader(
-    web_paths=[
-        "https://iciec.isdb.org/",
-        "https://iciec.isdb.org/climate-change/",
-        "https://iciec.isdb.org/impact/",
-        "https://iciec.isdb.org/covid-19/",
-        "https://iciec.isdb.org/iciec-food-security/",
-        "https://iciec.isdb.org/who-we-are/"
-    ],
+    web_paths=normalized_urls,
     bs_kwargs=dict(
         parse_only=bs4.SoupStrainer(name=['h1', 'h2', 'h3', 'h4', 'h5', 'p', 'a', 'span', 'textarea'])
     ),
