@@ -64,6 +64,8 @@ Collaboration with Financial Institutions:
                         prioritize renewable energy, energy efficiency, and
                         natural capital. 
 
+================================================================================
+URL: https://iciec.isdb.org/climate-change
 The Climate Change Policy of ICIEC is structured around three key operational objectives and five foundational pillars:
 Foundational Pillars:
 Internal Operations:
@@ -84,6 +86,9 @@ Communication:
                       level of the organization and its development impact
                       intervention in member countries.
 
+
+================================================================================
+URL: https://iciec.isdb.org/climate-change
 Operational Objectives:
 Support for Member States:
                       Prioritizing assistance to Member States in their climate
@@ -187,6 +192,10 @@ Joint Initiatives
                     climate risk screening software, to better identify and
                     assess potential climate change risks, ensuring a consistent
                     approach to sustainability.
+
+
+================================================================================
+URL: https://iciec.isdb.org/climate-change
 Innovative Solutions
 The Green Sukuk Insurance Policy is a testament to our
                     innovative approach, facilitating capital for viable green
@@ -220,6 +229,9 @@ Multimedia and Resources
 Special Issue (COP27) https://iciec.isdb.org/wp-content/uploads/2022/11/ICIEC-Special-Edition-Magazine-COP27-2022.pdf
 Special Issue (COP28) https://iciec.isdb.org/wp-content/uploads/2023/12/ICIEC-MAGAZINE-Special-Edition-COP28.pdf
 
+
+================================================================================
+URL: https://iciec.isdb.org/climate-change
 ICIEC at the United Nations Framework Convention on
 Climate Change Conferences (COP)
 ICIEC's active involvement in the United Nations Framework Convention on Climate Change Conferences (COP) reflects its deep commitment to addressing global climate challenges. Since its first participation at COP22 in Marrakech in 2016, where ICIEC organized a high-profile panel discussion under the theme “ECA Risk Mitigation in Renewable Energy Investments,” the organization has consistently played a pivotal role in these conferences. The panel at COP22 provided a prime platform to highlight the benefits that ICIEC, in collaboration with its partners, extends to Host Countries, Investors, Lenders, and Contractors in renewable energy projects. This event marked the beginning of ICIEC's robust engagement in global climate dialogues.
@@ -1304,7 +1316,7 @@ The driving ambition behind the OIC Investment Agreement as a whole and the crea
 
 ================================================================================
 URL: https://iciec.isdb.org/who-we-are/organization/board-of-governors
-Content: Board of governars
+Content: Board of governars or member countires of ICIEC
 Republic of Albania
 Governor
 countries board of governars
@@ -1364,7 +1376,7 @@ Republic of Yemen
 
 ================================================================================
 URL: https://iciec.isdb.org/who-we-are/vision-mision
-Content:
+Content: vision and mission
 Vision:
 “To be recognized as the preferred enabler of trade and investment for sustainable economic development in Member Countries”
 Mission:

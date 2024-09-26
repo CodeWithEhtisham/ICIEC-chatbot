@@ -39,6 +39,7 @@ loader = JSONLoader(
 # Load documents
 docs = loader.load()
 
+print(docs[0])
 # Commented out to suppress loaded data display
 # for doc in docs:
 #     st.write(doc.page_content)  # Display the content
@@ -54,7 +55,7 @@ system_prompt = (
     "You are an assistant for question-answering tasks. "
     "Use the following pieces of retrieved context to answer "
     "the question. If you don't know the answer, say that you "
-    "don't know. Use three sentences maximum and keep the "
+    "don't know."
     "answer concise."
     "\n\n"
     "{context}"
@@ -108,9 +109,14 @@ for message in st.session_state.messages:
         st.markdown(message["content"])
 
 # Handle new chat input
+# Handle new chat input
+# Handle new chat input
 if prompt := st.chat_input("Ask a question from the JSON data?"):
     with st.chat_message("user"):
         st.markdown(prompt)
+
+    # Print the user input (question) in the terminal
+    print("User Input:", prompt)
 
     st.session_state.messages.append({"role": "user", "content": prompt})
 
@@ -119,13 +125,30 @@ if prompt := st.chat_input("Ask a question from the JSON data?"):
         full_response = ""
 
         # Use LangChain RAG Chain for question-answering
+        # Retrieve the documents based on the input prompt
+        retrieved_docs = retriever.get_relevant_documents(prompt)
+
+        # Print the retrieved documents' content (context) being passed to the LLM
+        print("Retrieved Context for LLM:")
+        for doc in retrieved_docs:
+            print(doc.page_content)  # Print the paragraph/content sent to the model
+
+        # Now invoke the LLM with the prompt and context
         response = rag_chain.invoke({"input": prompt})
+
+        # Get the answer from the response
         full_response = response["answer"]
 
-        # Include source URL in the response
-        # Assuming we want to include the URL of the first document
-        source_url = docs[0].metadata["url"]  # Get the URL from the first doc, or customize as needed
-        full_response += f"\n\nSource URL: {source_url}"
+        # Gather the URLs from the retrieved documents
+        retrieved_urls = set(doc.metadata.get("url") for doc in retrieved_docs if doc.metadata.get("url"))
+
+        # If URLs exist, append them to the response
+        if retrieved_urls:
+            source_urls = "\n\nSources: " + ", ".join(retrieved_urls)
+            full_response += source_urls
+
+        # Print the assistant's response to the terminal
+        print("Assistant Response:", full_response)
 
         message_placeholder.markdown(full_response + "▌")
         message_placeholder.markdown(full_response)
