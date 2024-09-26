@@ -19,12 +19,12 @@ with open(input_file, 'r') as f:
 # Function to load and scrape web pages with LangChain's WebBaseLoader
 def scrape_page_with_langchain(urls):
     loader = WebBaseLoader(
-        web_paths=urls[:4],
+        web_paths=urls[:],
         bs_kwargs=dict(
-            parse_only=bs4.SoupStrainer(name=['h1', 'h2', 'h3', 'p', 'meta', 'title'])
+            parse_only=bs4.SoupStrainer(name=['main'])
         )
     )
-    documents = loader.load()
+    documents = loader.aload()
     return documents
 
 # Function to clean the content by removing extra new lines
@@ -39,7 +39,6 @@ def save_scraped_data(output_file, documents):
             # Write metadata
             metadata = doc.metadata
             outfile.write(f"URL: {metadata.get('source', 'Unknown')}\n")
-            outfile.write(f"Title: {metadata.get('title', 'Unknown')}\n")
             
             # Clean and write the scraped content
             content = clean_text(doc.page_content)
