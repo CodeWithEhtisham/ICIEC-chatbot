@@ -11,3 +11,4 @@ streamlit
 langchain_community
 chromadb==0.5.3
 faiss-gpu
+jq

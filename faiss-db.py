@@ -1,16 +1,12 @@
-# Importing required libraries
+from langchain_community.document_loaders import JSONLoader
 import streamlit as st
-from dotenv import load_dotenv
 import os
+from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
-from langchain_community.document_loaders import WebBaseLoader
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-# from langchain_chroma import Chroma
 from langchain_community.vectorstores import FAISS
 from langchain_core.prompts import ChatPromptTemplate
 from langchain.chains.retrieval import create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
-import bs4
 
 # Load environment variables
 env_path = os.path.join(os.path.dirname(__file__), '.env')
@@ -25,32 +21,35 @@ else:
 # Initialize LangChain and OpenAI client
 llm = ChatOpenAI(model="gpt-4o-mini", openai_api_key=openai_api_key)
 embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
-input_file = 'cleaned_normalized_urls.txt'  # Your input file name
+json_file_path = 'clean_data.json'  # Your input JSON file name
 
-with open(input_file, 'r') as f:
-    # Read all lines and strip any surrounding whitespace
-    urls = [line.strip() for line in f.readlines()]
+# Define the metadata extraction function
+def metadata_func(record: dict, metadata: dict) -> dict:
+    metadata["url"] = record.get("url")
+    return metadata
 
-# Normalize all URLs in the list
-normalized_urls = [url for url in urls]
-# Web page loader
-loader_multiple_pages = WebBaseLoader(
-    web_paths=normalized_urls,
-    bs_kwargs=dict(
-        parse_only=bs4.SoupStrainer(name=['h1', 'h2', 'h3', 'h4', 'h5', 'p', 'a', 'span', 'textarea'])
-    ),
-    show_progress=True
+# Initialize JSONLoader
+loader = JSONLoader(
+    file_path=json_file_path,
+    jq_schema=".[]",  # This targets the entire JSON object
+    content_key="content",
+    metadata_func=metadata_func
 )
-docs = loader_multiple_pages.load()
+
+# Load documents
+docs = loader.load()
+
+# Commented out to suppress loaded data display
+# for doc in docs:
+#     st.write(doc.page_content)  # Display the content
+#     st.write(doc.metadata)       # Display the metadata
 
 # Text splitting and vector store creation
-text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
-splits = text_splitter.split_documents(docs)
-vectorstore = FAISS.from_documents(documents=splits, embedding=embeddings)
+vectorstore = FAISS.from_documents(documents=docs, embedding=embeddings)
 
 retriever = vectorstore.as_retriever()
 
-# 2. Incorporate the retriever into a question-answering chain.
+# Question-answering chain setup
 system_prompt = (
     "You are an assistant for question-answering tasks. "
     "Use the following pieces of retrieved context to answer "
@@ -108,10 +107,8 @@ for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-
 # Handle new chat input
-if prompt := st.chat_input("Ask a question from the web pages?"):
-    # Replace specific words with summarization
+if prompt := st.chat_input("Ask a question from the JSON data?"):
     with st.chat_message("user"):
         st.markdown(prompt)
 
@@ -124,6 +121,12 @@ if prompt := st.chat_input("Ask a question from the web pages?"):
         # Use LangChain RAG Chain for question-answering
         response = rag_chain.invoke({"input": prompt})
         full_response = response["answer"]
+
+        # Include source URL in the response
+        # Assuming we want to include the URL of the first document
+        source_url = docs[0].metadata["url"]  # Get the URL from the first doc, or customize as needed
+        full_response += f"\n\nSource URL: {source_url}"
+
         message_placeholder.markdown(full_response + "▌")
         message_placeholder.markdown(full_response)
 
