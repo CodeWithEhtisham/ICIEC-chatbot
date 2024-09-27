@@ -39,7 +39,7 @@ loader = JSONLoader(
 # Load documents
 docs = loader.load()
 
-print(docs[0])
+
 # Commented out to suppress loaded data display
 # for doc in docs:
 #     st.write(doc.page_content)  # Display the content
@@ -111,7 +111,7 @@ for message in st.session_state.messages:
 # Handle new chat input
 # Handle new chat input
 # Handle new chat input
-if prompt := st.chat_input("Ask a question from the JSON data?"):
+if prompt := st.chat_input("Ask a question from the ICIEC website?"):
     with st.chat_message("user"):
         st.markdown(prompt)
 

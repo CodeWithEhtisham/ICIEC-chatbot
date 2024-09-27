@@ -1376,7 +1376,7 @@ Republic of Yemen
 
 ================================================================================
 URL: https://iciec.isdb.org/who-we-are/vision-mision
-Content: vision and mission
+Content: vision and mission of ICIEC
 Vision:
 “To be recognized as the preferred enabler of trade and investment for sustainable economic development in Member Countries”
 Mission:
