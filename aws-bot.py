@@ -11,7 +11,7 @@ from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_aws.embeddings import BedrockEmbeddings
 import boto3
 client =boto3.client(service_name="bedrock-runtime",region_name="us-east-1")
-embeddings = BedrockEmbeddings(model_id="amazon.titan-embed-text-v1",client=client)
+embeddings = BedrockEmbeddings(model_id="amazon.titan-embed-text-v2:0",client=client)
 
 
 # print(embeddings.embed_query("hello world is working"))
