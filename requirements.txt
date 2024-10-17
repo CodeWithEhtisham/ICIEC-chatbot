@@ -14,3 +14,4 @@ faiss-gpu
 jq
 langchain_aws
 awscli
+fastapi

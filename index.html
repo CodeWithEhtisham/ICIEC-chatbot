@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICIEC Chat Assistant</title>
+    <style>
+        /* General Styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        /* Chat container */
+        #chat-container {
+            width: 400px;
+            height: 600px;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: none;
+            flex-direction: column;
+            background-color: white;
+        }
+
+        /* Header */
+        #chat-header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        /* Messages Section */
+        #messages {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 14px;
+            word-wrap: break-word;
+        }
+
+        .user {
+            align-self: flex-end;
+            background-color: #DCF8C6;
+        }
+
+        .assistant {
+            align-self: flex-start;
+            background-color: #EDEDED;
+        }
+
+        /* Input Section */
+        #input-container {
+            display: flex;
+            border-top: 1px solid #ddd;
+        }
+
+        #user-input {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            outline: none;
+        }
+
+        #send-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        /* Floating Chat Button */
+        #chat-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background-color: #4CAF50;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+
+        #chat-icon img {
+            width: 30px;
+            height: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Floating Chat Icon -->
+    <div id="chat-icon">
+        <img src="https://img.icons8.com/ios-filled/50/FFFFFF/chat.png" alt="Chat Icon">
+    </div>
+
+    <!-- Chat Container -->
+    <div id="chat-container">
+        <div id="chat-header">AI Assistant</div>
+        <div id="messages"></div>
+        <div id="input-container">
+            <input type="text" id="user-input" placeholder="Ask a question...">
+            <button id="send-btn">Send</button>
+        </div>
+    </div>
+
+    <script>
+        const chatIcon = document.getElementById('chat-icon');
+        const chatContainer = document.getElementById('chat-container');
+        const messagesDiv = document.getElementById('messages');
+        const userInput = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-btn');
+
+        // Toggle chat container visibility
+        chatIcon.addEventListener('click', () => {
+            chatContainer.style.display = chatContainer.style.display === 'none' ? 'flex' : 'none';
+        });
+
+        function addMessage(role, content) {
+            const messageElement = document.createElement('div');
+            messageElement.className = `message ${role}`;
+            messageElement.textContent = content;
+            messagesDiv.appendChild(messageElement);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        sendBtn.addEventListener('click', async () => {
+            const question = userInput.value;
+            if (!question) return;
+
+            addMessage('user', question);
+            userInput.value = '';
+
+            // Send the question to the backend
+            const response = await fetch('http://localhost:8000/query', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ question }),
+            });
+
+            const data = await response.json();
+            const answer = data.answer;
+
+            addMessage('assistant', answer);
+        });
+    </script>
+
+</body>
+</html>
